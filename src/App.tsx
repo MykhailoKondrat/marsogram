@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import {
   AppBar,
@@ -7,67 +7,71 @@ import {
   Typography,
   Container,
   Grid,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  FormHelperText,
+  LinearProgress,
+  Fab,
 } from "@material-ui/core";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
-import { useDispatch } from "react-redux";
-import { testClick } from "./store/appSlice";
+import { useSelector } from "react-redux";
+import VerticalAlignTopIcon from "@material-ui/icons/VerticalAlignTop";
+import Form from "./Containers/Form";
+import ImagesGrid from "./Containers/ImagesGrid";
+import Paginator from "./Containers/Paginator";
+import { AppState } from "./Interfaces/AppInterfaces";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: { flexGrow: 1 },
+    root: { marginTop: theme.spacing(8) },
     ToolBar: {
       justifyContent: "center",
       backgroundColor: theme.palette.error.dark,
+      zIndex: 200,
+    },
+    formWrap: {
+      marginTop: theme.spacing(12),
+    },
+    fab: {
+      position: "fixed",
+      bottom: theme.spacing(2),
+      right: theme.spacing(2),
+      zIndex: 1000,
     },
   })
 );
-const App: React.FC = () => {
-  const dispatch = useDispatch();
-  const [age, setAge] = useState("");
 
-  const handleChange = (event: any) => {
-    setAge(event.target.value);
-  };
+const App = () => {
   const classes = useStyles();
+  const loading = useSelector((state: AppState) => state.appSlice.loading);
+  const photos = useSelector((state: AppState) => state.appSlice.fetchedPhotos);
+
+  const handleScrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar className={classes.ToolBar}>
           <Typography variant="h6">Mars-o-Gram</Typography>
         </Toolbar>
+        {loading && <LinearProgress />}
       </AppBar>
-      <Container maxWidth="sm">
-        <Grid container>
-          <FormControl>
-            <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
-            <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={age}
-              onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-            <FormHelperText>Some important helper text</FormHelperText>
-          </FormControl>
-        </Grid>
-        <button
-          onClick={() => {
-            dispatch(testClick());
-          }}
+      {photos.length > 8 && (
+        <Fab
+          color="primary"
+          className={classes.fab}
+          onClick={handleScrollToTop}
+          size="small"
         >
-          TEst
-        </button>
+          <VerticalAlignTopIcon style={{ color: "white" }} fontSize="small" />
+        </Fab>
+      )}
+
+      <Container maxWidth="lg" className={classes.root}>
+        <Grid container direction="column" justify="center">
+          <Form />
+          <ImagesGrid />
+          <Paginator />
+        </Grid>
       </Container>
     </div>
   );

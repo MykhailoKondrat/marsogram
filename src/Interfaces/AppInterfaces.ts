@@ -1,5 +1,5 @@
-type RoverName = "curiosity" | "opportunity" | "spirit";
-type RoverCamera =
+export type RoverName = "curiosity" | "opportunity" | "spirit" | "";
+export type RoverCamera =
   | "FHAZ"
   | "RHAZ"
   | "MAST"
@@ -8,24 +8,35 @@ type RoverCamera =
   | "MARDI"
   | "NAVCAM"
   | "PANCAM"
-  | "MINITES";
-interface Photo {
-  imgSrc: string;
-  earthDate: string;
-}
+  | "MINITES"
+  | "";
+
 interface Rover {
   name: RoverName;
   cameras: Array<RoverCamera>;
 }
-interface AvailableRovers {
-  curiosity: Rover;
-  opportunity: Rover;
-  spirit: Rover;
-}
+
 /// Exports
-export interface AppState {
+export interface AppSlice {
   loading: boolean;
   currentPage: number;
-  availableRovers: AvailableRovers;
-  fetchedPhotos: Array<Photo> | [];
+  hasMoreToLoad: boolean;
+  availableRovers: Array<Rover>;
+  fetchedPhotos: [];
+  currentRequest: {
+    rover: RoverName;
+    camera: RoverCamera;
+    sol: number;
+  };
+  errorMessage?: string;
+}
+export interface AppState {
+  appSlice: AppSlice;
+}
+export interface FetchDataParams {
+  rover: RoverName;
+  camera: RoverCamera;
+  sol: number;
+  currentPage: number;
+  intendedError?: string | "";
 }

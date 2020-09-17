@@ -1,8 +1,14 @@
-import { configureStore } from "@reduxjs/toolkit";
-import testSlice from "./appSlice";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import appSlice from "./appSlice";
 
 export default configureStore({
   reducer: {
-    testingSomething: testSlice,
+    appSlice,
   },
+  middleware: getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: ["main/FetchData/fulfilled"],
+    },
+  }),
+  devTools: true,
 });

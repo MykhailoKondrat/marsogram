@@ -83,7 +83,6 @@ export const appSlice = createSlice({
       state.loading = false;
       state.currentPage = 1;
       state.hasMoreToLoad = false;
-      console.log(payload);
       state.errorMessage = payload.errors;
     });
   },

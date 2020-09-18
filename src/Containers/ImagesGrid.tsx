@@ -3,7 +3,6 @@ import {
   Grid,
   GridList,
   GridListTile,
-  Snackbar,
   SnackbarContent,
   Theme,
   Typography,
@@ -21,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+
 const ImagesGrid = () => {
   const classes = useStyles();
   const theme = useTheme();
@@ -28,9 +28,11 @@ const ImagesGrid = () => {
   const currentPage = useSelector(
     (state: AppState) => state.appSlice.currentPage
   );
+
   const errorMessage = useSelector(
     (state: AppState) => state.appSlice.errorMessage
   );
+
   const smAndUp = useMediaQuery(theme.breakpoints.up("sm"));
   const mdAndUp = useMediaQuery(theme.breakpoints.up("md"));
 

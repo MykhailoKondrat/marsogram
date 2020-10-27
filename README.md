@@ -1,4 +1,4 @@
-This project was as test assignement for **Clover Dynamics**.
+
 
 ## Live Demo
 https://marsogram.web.app
